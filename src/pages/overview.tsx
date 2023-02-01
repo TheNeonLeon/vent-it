@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import VentilationOverview from "@/components/ventilationOverview/VentilationOverview";
+import Header from "@/components/header/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ export default function Overview() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <Header />
         <VentilationOverview />
       </main>
     </>
