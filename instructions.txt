@@ -1,0 +1,33 @@
+Instructions:
+
+This assignment should prove that you can create a web-application from the provided mockup.
+Use the assets provided in this folder.
+
+You have 48 hours to complete the assignment.
+
+The application should be compatible for browsers Chrome, Safari, Edge and Firefox.
+
+Use the technology you're most comfortable with. Is it maybe React, Angular, Vanilla JS? 
+
+Basic requirements:
+
+- Searching pump
+- Filtering
+- Create new pump
+- Deleting pump
+- Toggle Active/Inactive pump
+- Responsive to window size
+- The data collection could be huge, manage it accordingly
+
+No need to think about:
+- Links could be static/dummy
+- No need to persist data (no backend needed, will it be data in memory or in a file, the choice is yours)
+- The end result doesn't have to be "pixel-perfect". Do your best and focus on the functionality.  
+
+Bonus Features:
+
+If you have finished the prerequisites of the application you could add more functionality/styling.
+
+Be creative, show us what you got!
+
+*Good luck, May the force be with you.*
