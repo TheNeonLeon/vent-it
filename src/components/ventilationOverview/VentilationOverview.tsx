@@ -1,11 +1,33 @@
 import db from "@/firebase/firebaseConfig";
 import { getVentilationData } from "@/utils/ventilationApi";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import CreatePumpModal from "./modal/CreatePumpModal";
 import { VentilationProps } from "./types";
 
 export default function VentilationOverview() {
   const [ventilationData, setVentilationData] = useState([]);
+  const [statusCondition, setStatusCondition] = useState(false);
+  const [condition, setCondition] = useState("Deactivate");
+
+  const updateStatus = async (
+    id: string,
+    statusCondition: boolean,
+    db: any
+  ) => {
+    const userDoc = doc(db, "ventilations", id);
+    try {
+      const updateFieldData = {
+        status: {
+          statusCondition: !statusCondition,
+        },
+      };
+      setStatusCondition(true);
+      await updateDoc(userDoc, updateFieldData);
+    } catch (error) {
+      console.error("Error updating document: ", error);
+    }
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -23,8 +45,12 @@ export default function VentilationOverview() {
         <div>
           <div className="flex justify-between pr-10">
             <h1>Ventilation pump overview</h1>
-            <div data-modal-toggle="authentication-modal" data-modal-target="authentication-modal" data-modal-show="authentication-modal">
-            <CreatePumpModal />
+            <div
+              data-modal-toggle="authentication-modal"
+              data-modal-target="authentication-modal"
+              data-modal-show="authentication-modal"
+            >
+              <CreatePumpModal />
             </div>
           </div>
           <input placeholder="Search pump number" type="text" />
@@ -43,16 +69,38 @@ export default function VentilationOverview() {
                     </div>
                     <div className="flex flex-col">
                       <p>Status</p>
-                      {data.ventilation.status.statusCondition == false ? (
+                      {data.status.statusCondition == false ? (
                         <p>Disabled</p>
                       ) : (
                         <p>Active</p>
                       )}
                     </div>
-                    {data.ventilation.status.statusCondition == false ? (
-                      <button>Activate</button>
+                    {data.status.statusCondition == false ? (
+                      <button
+                        onClick={() => {
+                          updateStatus(
+                            data.id,
+                            data.status.statusCondition,
+                            db
+                          );
+                          setStatusCondition(true);
+                        }}
+                      >
+                        Activate
+                      </button>
                     ) : (
-                      <button>Deactivate</button>
+                      <button
+                        onClick={() => {
+                          updateStatus(
+                            data.id,
+                            data.status.statusCondition,
+                            db
+                          );
+                          setStatusCondition(false);
+                        }}
+                      >
+                        Deactivate
+                      </button>
                     )}
                   </div>
                 </ul>

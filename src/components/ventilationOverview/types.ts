@@ -1,4 +1,8 @@
 export interface VentilationProps {
+  id: string;
+  status: {
+    statusCondition: boolean;
+  };
   ventilation: {
     pump: {
       pumpDescription: string;
@@ -6,9 +10,6 @@ export interface VentilationProps {
     };
     area: {
       areaType: string;
-    };
-    status: {
-      statusCondition: boolean;
     };
   };
 }

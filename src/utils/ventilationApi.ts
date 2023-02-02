@@ -31,10 +31,27 @@ export const getAreaData = async (db: any) => {
   }
 };
 
+// export const updateStatus = async (
+//   id: string,
+//   statusCondition: boolean,
+//   db: any
+// ) => {
+//   try {
+//     const updateFieldData = {
+//       status: {
+//         statusCondition: !statusCondition,
+//       },
+//     };
+//     const userDoc = doc(db, "ventilations", id);
+//     await updateDoc(userDoc, updateFieldData);
+//   } catch (error) {
+//     console.error("Error updating document: ", error);
+//   }
+// };
 
 export const createVentilationPump = async (
   pumpNumber: number,
-  areaType: string,
+  areaType: string
 ) => {
   try {
     await addDoc(collection(db, "ventilations"), {
