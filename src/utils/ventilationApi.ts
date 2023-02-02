@@ -8,13 +8,51 @@ import {
 } from "firebase/firestore";
 
 export const getVentilationData = async (db: any) => {
-    try {
-      const ventilationData = collection(db, "ventilations");
-      const snapshot = await getDocs(ventilationData);
-      const list = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-  
-      return list;
-    } catch (error) {
-      console.error("Error getting user data", error);
-    }
-  };
+  try {
+    const ventilationData = collection(db, "ventilations");
+    const snapshot = await getDocs(ventilationData);
+    const list = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+    return list;
+  } catch (error) {
+    console.error("Error getting user data", error);
+  }
+};
+
+export const getAreaData = async (db: any) => {
+  try {
+    const ventilationData = collection(db, "areas");
+    const snapshot = await getDocs(ventilationData);
+    const list = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+    return list;
+  } catch (error) {
+    console.error("Error getting user data", error);
+  }
+};
+
+
+export const createVentilationPump = async (
+  pumpNumber: number,
+  areaType: string,
+  statusCondition: boolean
+) => {
+  try {
+    await addDoc(collection(db, "ventilations"), {
+      ventilation: {
+        pump: {
+          pumpNumber: pumpNumber,
+          pumpDescription: "Ventilation pump number",
+        },
+        area: {
+          areaType: areaType,
+        },
+        status: {
+          statusCondition: statusCondition,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Error adding document: ", error);
+  }
+};
