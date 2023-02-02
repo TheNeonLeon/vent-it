@@ -35,7 +35,6 @@ export const getAreaData = async (db: any) => {
 export const createVentilationPump = async (
   pumpNumber: number,
   areaType: string,
-  statusCondition: boolean
 ) => {
   try {
     await addDoc(collection(db, "ventilations"), {
@@ -48,7 +47,7 @@ export const createVentilationPump = async (
           areaType: areaType,
         },
         status: {
-          statusCondition: statusCondition,
+          statusCondition: true,
         },
       },
     });
