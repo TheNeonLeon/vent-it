@@ -12,7 +12,7 @@ export default function VentilationOverview() {
   const [statusCondition, setStatusCondition] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
   const [area, setAreaInfo] = useState([]);
-
+  const [areaValue, setAreaValue] = useState<string>("");
   const router = useRouter();
 
   const updateStatus = async (
@@ -38,14 +38,31 @@ export default function VentilationOverview() {
     router.reload()
   };
 
-  const filterArea = area.filter(function(result:any) {
-    const filter = area.map((data:AreaDataProps) => data.areaType);
-    const areaTypes = result.areaType;
-    // console.log(filter.join(''));
-    
-    return result.areaType === filter;
+  const selectOption = (e: { target: { value: SetStateAction<string>; }; }) => {
+    setAreaValue(e.target.value)
+  }
+
+  const filterArea = ventilationData.filter(function(result:VentilationProps) {
+    if(areaValue === "A"){
+     return result.ventilation.area.areaType.includes("A");
+    }else if(areaValue === "B"){
+      return result.ventilation.area.areaType.includes("B");
+    }else if(areaValue === "C"){
+      return result.ventilation.area.areaType.includes("C");
+    }else if(areaValue === "D"){
+      return result.ventilation.area.areaType.includes("D");
+    }else if(areaValue === "E"){
+      return result.ventilation.area.areaType.includes("F");
+    }else if(areaValue === "F"){
+      return result.ventilation.area.areaType.includes("F");
+    }else if(areaValue === "All areas"){
+      return result.ventilation.area.areaType;
+    }
+    else{
+      return result.ventilation.area.areaType;
+    }
   })
-  
+
   useEffect(() => {
     const getData = async () => {
       const data: Promise<any> = getVentilationData(db);
@@ -62,7 +79,7 @@ export default function VentilationOverview() {
   }, []);
 
   // console.log(ventilationData);
-console.log(ventilationData);
+console.log("area value:", areaValue);
 
   return (
     <>
@@ -88,26 +105,29 @@ console.log(ventilationData);
               placeholder="Search pump number"
             />
             <select
+            onChange={selectOption}
               defaultValue="Choose"
               className="mt-1 rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:text-gray-600"
             >
               <option value="Choose" disabled>
                 Choose area:
               </option>
-              {filterArea.map((areaData: AreaDataProps, key) => {
+              <option value="All areas">All areas</option>
+              {area.map((areaData: AreaDataProps, key) => {
                 return <option key={key}>{areaData.areaType}</option>;
               })}
             </select>
           </div>
-          {ventilationData
+          {filterArea
             .filter((item: VentilationProps) => {
                 return input.toLowerCase() === ""
                 ? item.ventilation.pump
-                :
+                : 
                 item.ventilation.pump.pumpNumber
                   .toString()
                   .toLowerCase()
                   .includes(input)
+                  
              
             })
             .map((data: VentilationProps) => {
