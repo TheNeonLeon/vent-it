@@ -66,7 +66,7 @@ export default function VentilationOverview() {
   }, []);
 
   // console.log(ventilationData);
-console.log(filterArea);
+console.log(ventilationData);
 
   return (
     <>
@@ -105,22 +105,19 @@ console.log(filterArea);
           </div>
           {ventilationData
             .filter((item: VentilationProps) => {
-              if (input == "") {
-                return item.ventilation.pump;
-              } else if (
+                return input.toLowerCase() === ""
+                ? item.ventilation.pump
+                :
                 item.ventilation.pump.pumpNumber
                   .toString()
                   .toLowerCase()
-                  .includes(input.toLowerCase())
-              ) {
-                return item.ventilation.pump;
-              }
+                  .includes(input)
+             
             })
             .map((data: VentilationProps) => {
               return (
                 <>
                   <ul>
-                    {input.toLowerCase() === "" ? (
                       <div className="md:flex md:flex-row p-7 border-spacing-5 rounded-3xl bg-white m-12 mb-5 pb-3 justify-evenly sm:flex flex-col">
                         <div className="flex flex-col">
                           <li className="opacity-70">{data.ventilation.pump.pumpDescription}</li>
@@ -138,7 +135,7 @@ console.log(filterArea);
                             <p className="text-green-600">Active</p>
                           )}
                         </div>
-                        <div className="flex justify-center text-xl text-white bg-violet-700 hover:bg-blue-800 md:w-52 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <div className="flex justify-center text-xl text-white bg-violet-700 hover:bg-blue-800 md:w-52 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         {data.status.statusCondition == false ? (
                           <button
                             onClick={() => {
@@ -168,12 +165,7 @@ console.log(filterArea);
                         )}
                         </div>
                       </div>
-                    ) : (
-                      data.ventilation.pump.pumpNumber
-                        .toString()
-                        .toLowerCase()
-                        .includes(input)
-                    )}
+                  
                   </ul>
                 </>
               );
