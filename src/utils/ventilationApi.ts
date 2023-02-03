@@ -5,7 +5,10 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
+
+import Router from "next/router";
 
 export const getVentilationData = async (db: any) => {
   try {
@@ -31,23 +34,15 @@ export const getAreaData = async (db: any) => {
   }
 };
 
-// export const updateStatus = async (
-//   id: string,
-//   statusCondition: boolean,
-//   db: any
-// ) => {
-//   try {
-//     const updateFieldData = {
-//       status: {
-//         statusCondition: !statusCondition,
-//       },
-//     };
-//     const userDoc = doc(db, "ventilations", id);
-//     await updateDoc(userDoc, updateFieldData);
-//   } catch (error) {
-//     console.error("Error updating document: ", error);
-//   }
-// };
+export const deletePump = async (id:string,db:any) => {
+  try {
+    const pumpDoc = doc(db, "ventilations", id);
+    await deleteDoc(pumpDoc);
+    Router.reload();
+  } catch (error) {
+    
+  }
+}
 
 export const createVentilationPump = async (
   pumpNumber: number,
@@ -55,6 +50,9 @@ export const createVentilationPump = async (
 ) => {
   try {
     await addDoc(collection(db, "ventilations"), {
+      status: {
+        statusCondition: true,
+      },
       ventilation: {
         pump: {
           pumpNumber: pumpNumber,
@@ -63,9 +61,10 @@ export const createVentilationPump = async (
         area: {
           areaType: areaType,
         },
-        status: {
-          statusCondition: true,
-        },
+        statusTextValue:{
+          valueActive: "",
+          valueDisabled: ""
+        }
       },
     });
   } catch (error) {

@@ -1,6 +1,11 @@
 import db from "@/firebase/firebaseConfig";
-import { createVentilationPump, getAreaData, getVentilationData } from "@/utils/ventilationApi";
+import {
+  createVentilationPump,
+  getAreaData,
+  getVentilationData,
+} from "@/utils/ventilationApi";
 import { Label, TextInput, Checkbox, Button } from "flowbite-react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AreaDataProps, VentilationForm } from "./types";
@@ -8,31 +13,33 @@ import { AreaDataProps, VentilationForm } from "./types";
 function CreatePumpModal() {
   const [showModal, setShowModal] = useState(false);
   const [ventilationInfo, setVentilationInfo] = useState<VentilationForm[]>([]);
-  const [area, setAreaInfo] = useState([])
+  const [area, setAreaInfo] = useState([]);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<VentilationForm>();
+  const router = useRouter();
 
   const onsubmit = async (data: VentilationForm, e: any) => {
     e.preventDefault();
     const ventilationInfo: any = await createVentilationPump(
       data?.ventilation.pumpNumber,
-      data?.ventilation.pumpArea,
+      data?.ventilation.pumpArea
     );
     setVentilationInfo(await ventilationInfo);
     getVentilationData(db);
+    router.reload();
   };
 
   useEffect(() => {
     const getAreaDataFromDb = async () => {
-        const fetchAreaData:Promise<any> = getAreaData(db);
-        setAreaInfo(await fetchAreaData);
-    }
+      const fetchAreaData: Promise<any> = getAreaData(db);
+      setAreaInfo(await fetchAreaData);
+    };
     getAreaDataFromDb();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -54,7 +61,7 @@ function CreatePumpModal() {
                   <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-3xl font-semibold">Modal Title</h3>
                     <button
-                    type="button"
+                      type="button"
                       className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                       onClick={() => setShowModal(false)}
                     >
@@ -84,7 +91,6 @@ function CreatePumpModal() {
                       />
                     </div>
 
-
                     <select
                       defaultValue="Choose"
                       className="mt-1 rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:text-gray-600"
@@ -93,12 +99,8 @@ function CreatePumpModal() {
                       <option value="Choose" disabled>
                         Choose area:
                       </option>
-                      {area.map((areaData:AreaDataProps,key) => {
-                        return(
-                            <option key={key}>
-                                {areaData.areaType}
-                            </option>
-                        )
+                      {area.map((areaData: AreaDataProps, key) => {
+                        return <option key={key}>{areaData.areaType}</option>;
                       })}
                     </select>
                   </div>

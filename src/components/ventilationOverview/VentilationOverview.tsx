@@ -1,5 +1,9 @@
 import db from "@/firebase/firebaseConfig";
-import { getAreaData, getVentilationData } from "@/utils/ventilationApi";
+import {
+  deletePump,
+  getAreaData,
+  getVentilationData,
+} from "@/utils/ventilationApi";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { SetStateAction, useEffect, useState } from "react";
@@ -90,13 +94,15 @@ export default function VentilationOverview() {
       <main>
         <div>
           <div className="md:grid grid-cols-7 p-7 m-6 sm:flex">
-            <h1 className="text-5xl pb-10 col-span-6">Ventilation pump overview</h1>
+            <h1 className="text-5xl pb-10 col-span-6">
+              Ventilation pump overview
+            </h1>
             <div
               data-modal-toggle="authentication-modal"
               data-modal-target="authentication-modal"
               data-modal-show="authentication-modal"
             >
-                <CreatePumpModal />
+              <CreatePumpModal />
             </div>
           </div>
           <div className="sm:flex flex-col md:grid grid-cols-3 gap-20 p-7 m-6 sm,">
@@ -140,6 +146,7 @@ export default function VentilationOverview() {
               <option value="No filter">No filter</option>
             </select>
           </div>
+
           {filterArea
             .filter((item: VentilationProps) => {
               return input.toLowerCase() === ""
@@ -152,6 +159,10 @@ export default function VentilationOverview() {
             .map((data: VentilationProps) => {
               return (
                 <>
+                 {data.id== "" ? (
+                          <p className="text-red-600"></p>
+                        ) : (
+                        
                   <ul>
                     <div className="md:flex md:flex-row p-7 border-spacing-5 rounded-3xl bg-white m-12 mb-5 pb-3 justify-evenly sm:flex flex-col">
                       <div className="flex flex-col">
@@ -205,8 +216,12 @@ export default function VentilationOverview() {
                           </button>
                         )}
                       </div>
+                      <button onClick={() => deletePump(data.id, db)}>
+                        Delete
+                      </button>
                     </div>
                   </ul>
+                  )}
                 </>
               );
             })}
