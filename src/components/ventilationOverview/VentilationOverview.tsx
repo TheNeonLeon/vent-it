@@ -46,7 +46,7 @@ export default function VentilationOverview() {
   const filterArea = ventilationData.filter(function (
     result: VentilationProps
   ) {
-    if(statusCondition){
+    if (statusCondition) {
       return result.ventilation.statusTextValue.valueActive.includes("Active");
     }
     if (areaValue === "A") {
@@ -67,7 +67,7 @@ export default function VentilationOverview() {
       return result.ventilation.area.areaType;
     }
   });
-console.log(ventilationData);
+  console.log();
 
   useEffect(() => {
     const getData = async () => {
@@ -89,19 +89,19 @@ console.log(ventilationData);
     <>
       <main>
         <div>
-          <div className="flex justify-between pr-10">
-            <h1>Ventilation pump overview</h1>
+          <div className="md:grid grid-cols-7 p-7 m-6 sm:flex">
+            <h1 className="text-5xl pb-10 col-span-6">Ventilation pump overview</h1>
             <div
               data-modal-toggle="authentication-modal"
               data-modal-target="authentication-modal"
               data-modal-show="authentication-modal"
             >
-              <CreatePumpModal />
+                <CreatePumpModal />
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="sm:flex flex-col md:grid grid-cols-3 gap-20 p-7 m-6 sm,">
             <input
-              className="input-field"
+              className="input-field rounded-2xl pl-6"
               type="search"
               name="search"
               onChange={(e) => setInput(e.target.value)}
@@ -130,8 +130,12 @@ console.log(ventilationData);
               <option value="Choose" disabled>
                 Choose status:
               </option>
-              {ventilationData.map((data:VentilationProps) => {
-                return <option>{data.ventilation.statusTextValue.valueActive}</option>
+              {ventilationData.map((data: VentilationProps) => {
+                return (
+                  <option>
+                    {data.ventilation.statusTextValue.valueActive}
+                  </option>
+                );
               })}
               <option value="No filter">No filter</option>
             </select>

@@ -4,6 +4,7 @@ import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import VentilationOverview from "@/components/ventilationOverview/VentilationOverview";
 import Header from "@/components/header/Header";
+import Footer from "@/components/footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,9 +17,12 @@ export default function Overview() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main className="min-h-screen">
         <Header />
         <VentilationOverview />
+        <div className="sticky top-[100vh]">
+          <Footer />
+        </div>
       </main>
     </>
   );
