@@ -11,5 +11,9 @@ export interface VentilationProps {
     area: {
       areaType: string;
     };
+    statusTextValue:{
+      valueActive: string;
+      valueDisabled: string;
+    }
   };
 }
