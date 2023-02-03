@@ -8,8 +8,8 @@ import { AreaDataProps } from "./modal/types";
 import { VentilationProps } from "./types";
 
 export default function VentilationOverview() {
-  const [ventilationData, setVentilationData] = useState([]);
-  const [statusCondition, setStatusCondition] = useState(false);
+  const [ventilationData, setVentilationData] = useState<VentilationProps[]>([]);
+  const [statusCondition, setStatusCondition] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
   const [area, setAreaInfo] = useState([]);
 
@@ -45,11 +45,7 @@ export default function VentilationOverview() {
     
     return result.areaType === filter;
   })
-
-  useEffect(() => {
-    getVentilationData(db);
-  }, [statusCondition])
-
+  
   useEffect(() => {
     const getData = async () => {
       const data: Promise<any> = getVentilationData(db);
